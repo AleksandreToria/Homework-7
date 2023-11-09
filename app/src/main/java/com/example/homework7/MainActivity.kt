@@ -3,6 +3,8 @@ package com.example.homework7
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.Toast
 import com.example.homework7.databinding.ActivityMainBinding
 import java.lang.NumberFormatException
@@ -17,10 +19,23 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.addBtn.setOnClickListener {
+            if (binding.input.text.toString() == "") {
+                Toast.makeText(this, "Field is empty", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             if (binding.numericCheck.isChecked) {
                 if (isNumeric(binding.input.text.toString())) {
-                    binding.numericInput.text =
-                        "${binding.numericInput.text}\n${binding.input.text}"
+                    val newEditText = EditText(this)
+                    newEditText.hint = binding.input.text
+
+                    val layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    )
+                    newEditText.layoutParams = layoutParams
+                    binding.layoutOne.addView(newEditText)
+
                     binding.input.text?.clear()
                 } else {
                     Toast.makeText(this, "Please un-tick numeric checkbox", Toast.LENGTH_SHORT)
@@ -28,7 +43,15 @@ class MainActivity : AppCompatActivity() {
                 }
             } else {
                 if (!isNumeric(binding.input.text.toString())) {
-                    binding.textInput.text = "${binding.textInput.text}\n${binding.input.text}"
+                    val newEditText = EditText(this)
+                    newEditText.hint = binding.input.text
+
+                    val layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    )
+                    newEditText.layoutParams = layoutParams
+                    binding.layoutTwo.addView(newEditText)
                     binding.input.text?.clear()
                 } else {
                     Toast.makeText(this, "Please tick numeric checkbox", Toast.LENGTH_SHORT).show()
